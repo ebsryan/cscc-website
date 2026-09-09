@@ -22,6 +22,12 @@
   --font-body: 'Inter', sans-serif;
 
   /* Layout */
+  /* Header sizing — logo is a stacked badge, so the bar is taller than a
+     wordmark would need. Change these two and the nav, mobile menu and
+     hero spacing all follow automatically. */
+  --header-h: 108px;
+  --logo-h: 84px;
+
   --max-width: 1180px;
   --section-pad: clamp(72px, 9vw, 128px);
   --radius: 6px;
@@ -156,18 +162,18 @@ p { color: var(--gray-mid); }
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.nav-wrap { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+.nav-wrap { display: flex; align-items: center; justify-content: space-between; height: var(--header-h); }
 
 .logo-mark { display: flex; align-items: center; color: var(--white); }
 
 .header-logo {
-  height: 52px;
+  height: var(--logo-h);
   width: auto;
   display: block;
 }
 
 .footer-logo {
-  height: 56px;
+  height: 96px;
   width: auto;
   display: block;
   margin-bottom: 14px;
@@ -202,9 +208,12 @@ p { color: var(--gray-mid); }
 .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
 
 @media (max-width: 880px) {
+  :root { --header-h: 84px; --logo-h: 64px; }
+  .footer-logo { height: 80px; }
+
   .main-nav {
     position: fixed;
-    top: 72px; left: 0; right: 0;
+    top: var(--header-h); left: 0; right: 0;
     background: var(--navy-deep);
     flex-direction: column;
     align-items: flex-start;
@@ -229,7 +238,7 @@ p { color: var(--gray-mid); }
   align-items: center;
   background: var(--navy-deep);
   overflow: hidden;
-  padding-top: 72px;
+  padding-top: var(--header-h);
 }
 
 .hero-swoosh { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
@@ -812,6 +821,29 @@ p { color: var(--gray-mid); }
 .venue-map-frame iframe { width: 100%; height: 100%; border: 0; }
 
 .info-list { list-style: none; margin-top: 22px; }
+
+/* Links inside the venue info list. Site-wide links inherit their colour and
+   have no underline, so they need to be marked out explicitly here. */
+.info-link {
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.info-link:hover { color: var(--red-dark); }
+
+/* The booking cut-off date, so it reads at a glance. Overrides the label
+   styling that .info-list strong applies to the field names. */
+.info-list strong.info-note {
+  display: inline;
+  color: var(--navy);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 700;
+  margin-bottom: 0;
+}
 
 .info-list li { display: flex; flex-direction: column; padding: 14px 0; border-top: 1px solid var(--gray-line); }
 .info-list li:first-child { border-top: none; padding-top: 0; }
