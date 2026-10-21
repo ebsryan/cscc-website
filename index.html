@@ -300,7 +300,11 @@
           <h3>Registration Form</h3>
           <p>Fill out the form below to reserve your spot. You'll receive a confirmation email with full details.</p>
 
-          <form id="registrationForm" novalidate>
+          <form id="registrationForm" name="registration" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+            <!-- Netlify needs this hidden field to match the submission to the form. -->
+            <input type="hidden" name="form-name" value="registration">
+            <!-- Spam trap: hidden from people, but bots fill it in and get discarded. -->
+            <p class="hidden-field"><label>Leave this field empty <input name="bot-field"></label></p>
             <div class="form-row two-col">
               <div>
                 <label for="firstName">First Name *</label>
@@ -371,7 +375,11 @@
           <div class="form-success" id="formSuccess">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
             <h3>You're Registered!</h3>
-            <p>Thanks — a confirmation will be sent to your email shortly. We'll follow up with any additional details as the event approaches.</p>
+            <p>Thanks — we've received your registration. We'll follow up by email with any additional details as the event approaches.</p>
+          </div>
+
+          <div class="form-error" id="formError">
+            <p><strong>Something went wrong.</strong> Your registration didn't send. Please try again, or email us directly so we don't miss you.</p>
           </div>
         </div>
       </div>
@@ -493,6 +501,70 @@
           <a href="https://link.waveapps.com/m93n35-xywj8t" target="_blank" rel="noopener" class="btn btn-navy" style="margin-top:20px;">Reserve</a>
         </div>
 
+      </div>
+
+      <!-- Vendor enquiry -->
+      <div class="section-head center" style="margin-top: 80px;">
+        <div class="eyebrow" style="justify-content:center;">Questions</div>
+        <h2>Talk to us first</h2>
+        <p style="margin-top:12px;">Not ready to reserve, or need details before you commit? Send us a note and we'll get back to you.</p>
+      </div>
+
+      <div class="vendor-form-wrap">
+        <form id="vendorForm" name="vendor-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" novalidate>
+          <input type="hidden" name="form-name" value="vendor-enquiry">
+          <p class="hidden-field"><label>Leave this field empty <input name="bot-field"></label></p>
+
+          <div class="form-row two-col">
+            <div>
+              <label for="vendorCompany">Company *</label>
+              <input type="text" id="vendorCompany" name="company" required>
+            </div>
+            <div>
+              <label for="vendorName">Your Name *</label>
+              <input type="text" id="vendorName" name="name" required>
+            </div>
+          </div>
+
+          <div class="form-row two-col">
+            <div>
+              <label for="vendorEmail">Email *</label>
+              <input type="email" id="vendorEmail" name="email" required>
+            </div>
+            <div>
+              <label for="vendorPhone">Phone</label>
+              <input type="tel" id="vendorPhone" name="phone">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="vendorInterest">What are you interested in?</label>
+            <select id="vendorInterest" name="interest">
+              <option value="">Select one</option>
+              <option>Booth space</option>
+              <option>Sponsorship</option>
+              <option>Main stage speaking slot</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="vendorMessage">Your question *</label>
+            <textarea id="vendorMessage" name="message" rows="4" required placeholder="Booth location, electrical, shipping, load-in times, anything else."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit">Send Enquiry</button>
+        </form>
+
+        <div class="form-success" id="vendorSuccess">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <h3>Message Sent</h3>
+          <p>Thanks — we've got your question and will be in touch shortly.</p>
+        </div>
+
+        <div class="form-error" id="vendorError">
+          <p><strong>Something went wrong.</strong> Your message didn't send. Please try again, or email us directly.</p>
+        </div>
       </div>
 
     </div>
