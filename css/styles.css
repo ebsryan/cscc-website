@@ -593,6 +593,35 @@ p { color: var(--gray-mid); }
 
 .form-submit { width: 100%; margin-top: 6px; }
 
+/* Vendor enquiry form. Reuses the navy registration panel so the field,
+   label and button styling below applies to it unchanged. */
+.vendor-form-wrap {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 36px;
+  color: var(--white);
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* Spam honeypot: hidden from people, visible to bots. Not display:none,
+   which some bots skip over. */
+.hidden-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Shown only if a submission fails, so nobody is told it worked when it didn't. */
+.form-error { display: none; margin-top: 18px; padding: 14px 16px; border-radius: 8px;
+  background: rgba(219,0,0,0.12); border: 1px solid rgba(219,0,0,0.4); }
+.form-error.show { display: block; }
+.form-error p { color: var(--white); font-size: 0.9rem; margin: 0; }
+
+.form-submit[disabled] { opacity: 0.6; cursor: default; }
+
 .form-success { display: none; text-align: center; padding: 30px 10px; }
 .form-success.show { display: block; }
 .form-success h3 { color: var(--white); }
@@ -601,6 +630,10 @@ p { color: var(--gray-mid); }
 @media (max-width: 900px) {
   .reg-grid { grid-template-columns: 1fr; }
   .form-row.two-col { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .vendor-form-wrap { padding: 24px 20px; }
 }
 
 /* ==========================================================================
