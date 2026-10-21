@@ -87,12 +87,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---------- Registration form ---------- */
-  const form = document.getElementById('registrationForm');
-  const formSuccess = document.getElementById('formSuccess');
+  /* ---------- Forms (registration + vendor enquiry) ----------
+     Submissions go to Netlify Forms. Netlify finds each form by the
+     name="..." on the <form> tag and stores every submission in the
+     site dashboard, as well as emailing the addresses configured there.
 
-  if (form) {
-    form.addEventListener('submit', (e) => {
+     The success message is only shown once Netlify has actually
+     confirmed receipt. If the send fails, the form stays on screen
+     with an error so nobody is told they registered when they didn't.
+  ------------------------------------------------------------------ */
+
+  const connectForm = (formId, successId, errorId) => {
+    const form = document.getElementById(formId);
+    const success = document.getElementById(successId);
+    const error = document.getElementById(errorId);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       if (!form.checkValidity()) {
@@ -100,22 +111,37 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // ------------------------------------------------------------------
-      // NOTE FOR SITE OWNER:
-      // This currently just shows a success message in the browser.
-      // It does NOT send data anywhere yet. Before going live, connect
-      // this to a real form backend (e.g. Formspree, Netlify Forms, or
-      // a custom email/database endpoint) so submissions are actually
-      // captured. See the registration handling guidance provided
-      // alongside this build for step-by-step setup.
-      // ------------------------------------------------------------------
+      const button = form.querySelector('button[type="submit"]');
+      const buttonText = button ? button.textContent : '';
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Sending...';
+      }
+      if (error) error.classList.remove('show');
 
-      const data = Object.fromEntries(new FormData(form).entries());
-      console.log('Registration submitted (not yet connected to backend):', data);
+      try {
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(form)).toString()
+        });
 
-      form.style.display = 'none';
-      formSuccess.classList.add('show');
+        if (!response.ok) throw new Error('Submission failed: ' + response.status);
+
+        form.style.display = 'none';
+        if (success) success.classList.add('show');
+      } catch (err) {
+        console.error(err);
+        if (error) error.classList.add('show');
+        if (button) {
+          button.disabled = false;
+          button.textContent = buttonText;
+        }
+      }
     });
-  }
+  };
+
+  connectForm('registrationForm', 'formSuccess', 'formError');
+  connectForm('vendorForm', 'vendorSuccess', 'vendorError');
 
 });
